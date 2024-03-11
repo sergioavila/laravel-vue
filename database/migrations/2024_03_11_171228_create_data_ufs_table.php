@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('data_ufs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->date('date');
+            $table->string('value');
         });
     }
 
