@@ -70,6 +70,12 @@
                     this.errorMessage = 'La fecha de inicio no puede ser mayor a la fecha de término.'
                 } else {
                     this.errorMessage = ''
+                    //get data
+                    let dates = {
+                        from: newFrom,
+                        to: this.to
+                    }
+                    this.fetchData(dates)
                 }
                 console.log(this.valoresUF)
             },
@@ -78,6 +84,12 @@
                     this.errorMessage = 'La fecha de término no puede ser menor a la fecha de inicio.'
                 } else {
                     this.errorMessage = ''
+                    //get data
+                    let dates = {
+                        from: this.from,
+                        to: newTo
+                    }
+                    this.fetchData(dates)
                 }
             }
         },
