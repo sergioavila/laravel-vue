@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <Bar
+        <Line
             id="indicadores"
             :options="chartOptions"
             :data="chartData"
@@ -32,22 +32,35 @@
 </template>
 
 <script>
-    import { Bar } from 'vue-chartjs'
-    import { mapState, mapActions } from 'vuex'
-    import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-    ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+    import { Line } from 'vue-chartjs'
+    import { mapGetters, mapActions } from 'vuex'
+    import { Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend } from 'chart.js'
+    ChartJS.register(CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend)
     const today = new Date()
 
     export default {
-        name: 'BarChart',
+        name: 'LineChart',
         components: {
-            Bar
+            Line
         },
         data() {
             return {
                 chartData: {
-                    labels: [ 'January', 'February', 'March' ],
-                    datasets: [ { data: [40, 20, 12] } ]
+                    labels: [ ],
+                    datasets: [ { data: [] } ]
                 },
                 chartOptions: {
                     responsive: true
@@ -60,49 +73,70 @@
         },
         computed: {
             // Mapea el estado `data` del store a la propiedad computada `data`
-            ...mapState(['valoresUF'])
+            ...mapGetters(['getValoresUF'])
         },
         watch: {
             //validar que la fecha de inicio no sea mayor a la fecha de término
             from(newFrom) {
-                console.log(newFrom)
                 if (newFrom > this.to) {
                     this.errorMessage = 'La fecha de inicio no puede ser mayor a la fecha de término.'
                 } else {
                     this.errorMessage = ''
-                    //get data
-                    let dates = {
-                        from: newFrom,
-                        to: this.to
-                    }
-                    this.fetchData(dates)
+                    this.createChartData(this.getValoresUF)
                 }
-                console.log(this.valoresUF)
             },
             to(newTo) {
                 if (this.from > newTo) {
                     this.errorMessage = 'La fecha de término no puede ser menor a la fecha de inicio.'
                 } else {
                     this.errorMessage = ''
-                    //get data
-                    let dates = {
-                        from: this.from,
-                        to: newTo
-                    }
-                    this.fetchData(dates)
+                    this.createChartData(this.getValoresUF)
                 }
             }
         },
         methods: {
-            ...mapActions(['fetchData'])
-        },
-        created() {
-            let dates = {
-                from: this.from,
-                to: this.to
+            ...mapActions(['fetchData']),
+            //remove dots from string and convert to number
+            formatMoney(value) {
+                return Number(value.replace(/\./g, '').replace(',', '.'))
+            },
+            //create chartData method
+            createChartData(dataUF){
+                let dates = {
+                    from: this.from,
+                    to: this.to
+                }
+                this.fetchData(dates)
+                this.chartData = {
+                    labels: dataUF.map(item => item.date),
+                    //agrega datos al gráfico
+                    datasets: [
+                        {
+                            label: 'Valor UF',
+                            data: dataUF.map(item => this.formatMoney(item.value)),
+                            //agregar formato de peso chileno al tooltip 
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        var label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+                                            label += ' CLP';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                }
             }
-            this.fetchData(dates)
-            console.log(this.valoresUF)
         }
     }
 </script>

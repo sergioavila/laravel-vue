@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import axios from "axios";
 
 const store = createStore({
     state: {
@@ -11,26 +12,25 @@ const store = createStore({
     },
     actions: {
         fetchData({ commit }, $dates) {
-            // consultar a la api y trae los datos
+            // obtener los datos de la url
             const queryString = new URLSearchParams($dates).toString();
-
             // consultar a la api y trae los datos
-            fetch("/api/data?" + queryString, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    commit("UPDATE_UF", data);
+            axios
+                .get("/api/data?" + queryString)
+                .then((response) => {
+                    // actualiza el estado con los datos obtenidos
+                    commit("UPDATE_UF", response.data);
                 })
                 .catch((error) => {
                     console.error("Error al obtener los datos:", error);
                 });
         },
     },
-    getters: {},
+    getters: {
+        getValoresUF: (state) => {
+            return state.valoresUF;
+        },
+    },
 });
 
 export default store;
