@@ -10,18 +10,16 @@ const store = createStore({
         },
     },
     actions: {
-        fetchData({ commit }) {
-            const dates = {
-                from: "2021-01-01",
-                to: "2021-12-31",
-            };
+        fetchData({ commit }, $dates) {
             // consultar a la api y trae los datos
-            fetch("/api/data", {
-                method: "POST",
+            const queryString = new URLSearchParams($dates).toString();
+
+            // consultar a la api y trae los datos
+            fetch("/api/data?" + queryString, {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(dates),
             })
                 .then((response) => response.json())
                 .then((data) => {

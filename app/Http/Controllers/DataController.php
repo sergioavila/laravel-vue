@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Http;
 class DataController extends Controller
 {
     // Get data from database and return as JSON response in the date provided by the user
-    public function getData(Request $request)
-    {
+    public function getData(Request $request){
         // Get date from the request
         // $date = $request->input('date');
 
@@ -20,7 +19,7 @@ class DataController extends Controller
         // if($data->isEmpty()){
         //     $data = $this->createData($date);
         // }
-        $data = $this->getDataFromApi();
+        $data = $request;
 
         // Return data as JSON response
         return response()->json($data);

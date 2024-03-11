@@ -20,4 +20,4 @@ use App\Http\Controllers\DataController;
 // });
 
 //send from database and return as JSON response
-Route::post('/data', [DataController::class, 'getData']);
+Route::get('/data', [DataController::class, 'getData']);

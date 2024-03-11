@@ -64,7 +64,8 @@
         },
         watch: {
             //validar que la fecha de inicio no sea mayor a la fecha de término
-            from(newFrom, oldFrom) {
+            from(newFrom) {
+                console.log(newFrom)
                 if (newFrom > this.to) {
                     this.errorMessage = 'La fecha de inicio no puede ser mayor a la fecha de término.'
                 } else {
@@ -72,7 +73,7 @@
                 }
                 console.log(this.valoresUF)
             },
-            to(newTo, oldTo) {
+            to(newTo) {
                 if (this.from > newTo) {
                     this.errorMessage = 'La fecha de término no puede ser menor a la fecha de inicio.'
                 } else {
@@ -84,7 +85,11 @@
             ...mapActions(['fetchData'])
         },
         created() {
-            this.fetchData(this.from, this.to)
+            let dates = {
+                from: this.from,
+                to: this.to
+            }
+            this.fetchData(dates)
             console.log(this.valoresUF)
         }
     }
