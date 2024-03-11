@@ -19,5 +19,5 @@ use App\Http\Controllers\DataController;
 //     return $request->user();
 // });
 
-//get data from database and return as JSON response
-Route::get('/data', [DataController::class, 'getData']);
+//send from database and return as JSON response
+Route::post('/data', [DataController::class, 'getData']);
