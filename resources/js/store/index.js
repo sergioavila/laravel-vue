@@ -11,12 +11,10 @@ const store = createStore({
         },
     },
     actions: {
-        fetchData({ commit }, $dates) {
+        fetchData({ commit }, { from, to }) {
             // obtener los datos de la url
-            const queryString = new URLSearchParams($dates).toString();
-            // consultar a la api y trae los datos
             axios
-                .get("/api/data?" + queryString)
+                .get(`api/data?from=${from}&to=${to}`)
                 .then((response) => {
                     // actualiza el estado con los datos obtenidos
                     commit("UPDATE_UF", response.data);

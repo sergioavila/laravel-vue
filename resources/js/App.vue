@@ -35,26 +35,30 @@
     import { Line } from 'vue-chartjs'
     import { mapGetters, mapActions } from 'vuex'
     import { Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend } from 'chart.js'
-    ChartJS.register(CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend)
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend } from 'chart.js'
+        ChartJS.register(CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        Tooltip,
+        Legend)
     const today = new Date()
 
     export default {
         name: 'LineChart',
         components: {
             Line
+        },
+        mounted(){
+            //fetch data from API
+            this.fetchData({from: this.from, to: this.to})
         },
         data() {
             return {
@@ -82,7 +86,7 @@
                     this.errorMessage = 'La fecha de inicio no puede ser mayor a la fecha de término.'
                 } else {
                     this.errorMessage = ''
-                    this.createChartData(this.getValoresUF)
+                    this.fetchData({from: this.from, to: this.to})
                 }
             },
             to(newTo) {
@@ -90,8 +94,11 @@
                     this.errorMessage = 'La fecha de término no puede ser menor a la fecha de inicio.'
                 } else {
                     this.errorMessage = ''
-                    this.createChartData(this.getValoresUF)
+                    this.fetchData({from: this.from, to: this.to})
                 }
+            },
+            getValoresUF(newValoresUF) {
+                this.createChartData(newValoresUF)
             }
         },
         methods: {
@@ -106,7 +113,7 @@
                     from: this.from,
                     to: this.to
                 }
-                this.fetchData(dates)
+                //this.fetchData(dates)
                 this.chartData = {
                     labels: dataUF.map(item => item.date),
                     //agrega datos al gráfico
