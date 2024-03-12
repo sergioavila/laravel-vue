@@ -31,22 +31,16 @@ Para compilar los assets de Vue.js y ver los cambios en tiempo real, ejecuta: `n
 ## Características
 
 -   Backend desarrollado con Laravel, proporcionando una API REST para interactuar con la base de datos.
-    -- Este código define un controlador en Laravel llamado DataController. Este controlador tiene dos métodos principales: getData y getDataFromApi.
-
--- El método getData se encarga de obtener datos de la base de datos y devolverlos como una respuesta JSON. Primero, recibe una solicitud HTTP y extrae los parámetros from y to de la solicitud. Estos parámetros se convierten al formato correcto de fecha y se extraen el año y el mes de cada uno.
-
--- Luego, intenta obtener los datos de la base de datos para los años y meses especificados. Si no encuentra datos para el año y mes 'from', llama al método getDataFromApi para obtener los datos de una API, los guarda en la base de datos y luego los recupera de nuevo. Hace lo mismo para el año y mes 'to'.
-
--- Finalmente, obtiene todos los datos de la base de datos que están entre las fechas 'from' y 'to' y los devuelve como una respuesta JSON.
-
--- El método getDataFromApi se encarga de obtener datos de una API. Primero, obtiene la URL de la API de las variables de entorno. Luego, hace una solicitud GET a la API, pasando el año y el mes como parámetros.
-
--- Si la solicitud falla o el código de estado de la respuesta no es 200, devuelve una respuesta JSON con un mensaje de error. Si la solicitud es exitosa, extrae el cuerpo de la respuesta, lo convierte a un array de PHP y verifica si existe la clave 'UFs'. Si existe, devuelve el valor de 'UFs'. Si no existe, devuelve una respuesta JSON con un mensaje de error.
-
+    -   Este código define un controlador en Laravel llamado DataController. Este controlador tiene dos métodos principales: getData y getDataFromApi.
+    -   El método getData se encarga de obtener datos de la base de datos y devolverlos como una respuesta JSON. Primero, recibe una solicitud HTTP y extrae los parámetros from y to de la solicitud. Estos parámetros se convierten al formato correcto de fecha y se extraen el año y el mes de cada uno.
+    -   Luego, intenta obtener los datos de la base de datos para los años y meses especificados. Si no encuentra datos para el año y mes 'from', llama al método getDataFromApi para obtener los datos de una API, los guarda en la base de datos y luego los recupera de nuevo. Hace lo mismo para el año y mes 'to'.
+    -   Finalmente, obtiene todos los datos de la base de datos que están entre las fechas 'from' y 'to' y los devuelve como una respuesta JSON.
+    -   El método getDataFromApi se encarga de obtener datos de una API. Primero, obtiene la URL de la API de las variables de entorno. Luego, hace una solicitud GET a la API, pasando el año y el mes como parámetros.
+    -   Si la solicitud falla o el código de estado de la respuesta no es 200, devuelve una respuesta JSON con un mensaje de error. Si la solicitud es exitosa, extrae el cuerpo de la respuesta, lo convierte a un array de PHP y verifica si existe la clave 'UFs'. Si existe, devuelve el valor de 'UFs'. Si no existe, devuelve una respuesta JSON con un mensaje de error.
 -   Frontend desarrollado con Vue.js, proporcionando una interfaz de usuario interactiva.
-    -- El componente App utiliza Vuex para manejar el estado global y vue-chartjs para mostrar los datos en un gráfico de línea. Los datos se obtienen de una API al montar el componente y cada vez que el usuario cambia las fechas seleccionadas.
+    -   El componente App utiliza Vuex para manejar el estado global y vue-chartjs para mostrar los datos en un gráfico de línea. Los datos se obtienen de una API al montar el componente y cada vez que el usuario cambia las fechas seleccionadas.
 -   Vuex para la gestión del estado en el frontend, permitiendo un flujo de datos unidireccional y una arquitectura más predecible.
-    -- valoresUF es el estado que guarda un array.
-    -- UPDATE_UF es una mutación que actualiza valoresUF.
-    -- fetchData es una acción que obtiene datos de una API con Axios y luego actualiza valoresUF con los datos obtenidos.
-    -- getValoresUF es un getter que devuelve el estado valoresUF.
+    -   valoresUF es el estado que guarda un array.
+    -   UPDATE_UF es una mutación que actualiza valoresUF.
+    -   fetchData es una acción que obtiene datos de una API con Axios y luego actualiza valoresUF con los datos obtenidos.
+    -   getValoresUF es un getter que devuelve el estado valoresUF.
